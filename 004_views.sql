@@ -1,4 +1,4 @@
--- 004_views.sql
+ -- 004_views.sql
 -- Purpose: Reporting and dashboard views
 
 CREATE OR REPLACE VIEW vw_reservation_schedule AS

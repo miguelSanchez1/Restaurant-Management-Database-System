@@ -63,6 +63,21 @@ SET payment_status = 'Paid',
     paid_at = NOW()
 WHERE payment_id = 1;
 
+-- UPDATE #4: Change customer phone number
+SELECT * FROM customer WHERE customer_id = 1;
+UPDATE customer SET phone = '714-555-1111' WHERE customer_id = 1;
+SELECT * FROM customer WHERE customer_id = 1;
+
+-- UPDATE #5: Change menu item price
+SELECT * FROM menu_item WHERE menu_item_id = 2;
+UPDATE menu_item SET price = 9.00 WHERE menu_item_id = 2;
+SELECT * FROM menu_item WHERE menu_item_id = 2;
+
+-- UPDATE #6: Mark staff as inactive
+SELECT * FROM staff WHERE staff_id = 3;
+UPDATE staff SET is_active = FALSE WHERE staff_id = 3;
+SELECT * FROM staff WHERE staff_id = 3;
+
 
 -- =========================
 -- DELETE — 3 examples
@@ -81,5 +96,20 @@ WHERE order_item_id = 1;
 -- DELETE #3: Delete a completed reservation record
 DELETE FROM reservation
 WHERE reservation_id = 3;
+
+-- DELETE #4: Remove a customer
+SELECT * FROM customer WHERE customer_id = 2;
+DELETE FROM customer WHERE customer_id = 2;
+SELECT * FROM customer WHERE customer_id = 2;
+
+-- DELETE #5: Remove a menu item
+SELECT * FROM menu_item WHERE menu_item_id = 6;
+DELETE FROM menu_item WHERE menu_item_id = 6;
+SELECT * FROM menu_item WHERE menu_item_id = 6;
+
+-- DELETE #6: Remove a staff record
+SELECT * FROM staff WHERE staff_id = 4;
+DELETE FROM staff WHERE staff_id = 4;
+SELECT * FROM staff WHERE staff_id = 4;
 
 ROLLBACK;
