@@ -6,8 +6,6 @@
 ![Supabase](https://img.shields.io/badge/cloud-Supabase-3ECF8E?logo=supabase&logoColor=white)
 ![Status](https://img.shields.io/badge/status-Phase%202%20%E2%80%94%20Live-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
-
-https://th.bing.com/th/id/OIP.wFhiiyNCcouL5OGgrOtY5wHaE8?w=278&h=185&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3
  
 CPSC 332 — Final Project, Phase 2: Implementation & Presentation
 
