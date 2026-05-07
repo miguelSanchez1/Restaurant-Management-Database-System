@@ -2,31 +2,38 @@
 -- 002_seed_data.sql
 -- Purpose: Insert sample data for the Restaurant Management Database System
 
+-- adds 3 sample customers, all with unique phone numbers and emails
 INSERT INTO customer (full_name, phone, email) VALUES
 ('Emma Rodriguez', '714-555-1001', 'emma@email.com'),
 ('Noah Kim', '714-555-1002', 'noah@email.com'),
 ('Sophia Patel', '714-555-1003', 'sophia@email.com');
 
+-- adds 4 staff members with names, phone numbers, hire dates, and roles (Manager, Server, Host, Cashier)
 INSERT INTO staff (full_name, role, phone, hire_date) VALUES
 ('Olivia Martinez', 'Manager', '714-555-2001', '2022-04-01'),
 ('Ethan Chen', 'Server', '714-555-2002', '2023-01-15'),
 ('Mia Johnson', 'Host', '714-555-2003', '2023-06-01'),
 ('Lucas Brown', 'Cashier', '714-555-2004', '2023-09-10');
 
+-- creates 4 restarant tables, setting their table numbers, seating capacities, and initial statuses
 INSERT INTO restaurant_table (table_number, seating_capacity, status) VALUES
 (1, 2, 'Available'),
 (2, 4, 'Reserved'),
 (3, 4, 'Available'),
 (4, 6, 'Occupied');
 
+-- adds 6 menu items to the menu
 INSERT INTO menu_item (item_name, category, price, is_available) VALUES
 ('Garlic Bread', 'Appetizer', 6.50, TRUE),
 ('Caesar Salad', 'Appetizer', 8.00, TRUE),
 ('Grilled Salmon', 'Entree', 24.00, TRUE),
 ('Chicken Alfredo', 'Entree', 18.50, TRUE),
 ('Cheesecake', 'Dessert', 7.50, TRUE),
+('Lemonade', 'Drink', 2.00, TRUE),
+('Coke', 'Drink', 3.50, TRUE),
 ('Iced Tea', 'Drink', 3.50, TRUE);
 
+-- Adds 3 reservations, two upcoming and one completed, linking to customers, tables, and staff
 INSERT INTO reservation (
   customer_id, table_id, reserved_by, reservation_time, party_size, status, notes
 ) VALUES
@@ -34,6 +41,8 @@ INSERT INTO reservation (
 (2, 3, 3, NOW() + INTERVAL '1 day', 2, 'Booked', 'Window preferred'),
 (3, 1, 3, NOW() - INTERVAL '3 hours', 2, 'Completed', 'Anniversary');
 
+-- Adds 3 customer orders, two dine-in and one takeout, linking to customers, tables, and staff
+-- Specifies status, order time, and notes for each order
 INSERT INTO customer_order (
   customer_id, table_id, staff_id, order_type, order_status, order_time, total_amount, notes
 ) VALUES
@@ -41,6 +50,7 @@ INSERT INTO customer_order (
 (2, NULL, 2, 'Takeout', 'Paid', NOW() - INTERVAL '2 hours', 0, 'Pickup order'),
 (3, 4, 2, 'Dine-In', 'Served', NOW() - INTERVAL '45 minutes', 0, 'Extra plates');
 
+-- Adds multiple order items for each order, linking to menu items and specifying quantity, unit price, and line total
 INSERT INTO order_item (order_id, menu_item_id, quantity, unit_price, line_total) VALUES
 (1, 1, 1, 6.50, 6.50),
 (1, 4, 2, 18.50, 37.00),
@@ -50,6 +60,7 @@ INSERT INTO order_item (order_id, menu_item_id, quantity, unit_price, line_total
 (3, 2, 1, 8.00, 8.00),
 (3, 4, 1, 18.50, 18.50);
 
+-- recalculate total amounts for all orders based on the order items
 UPDATE customer_order o
 SET total_amount = totals.total_amount
 FROM (
@@ -59,6 +70,9 @@ FROM (
 ) totals
 WHERE totals.order_id = o.order_id;
 
+
+-- creates payment records per order, specifying the processing staff
+-- payment method, amound paid, payment status, and timestamp for paid orders
 INSERT INTO payment (
   order_id, processed_by, payment_method, amount_paid, payment_status, paid_at
 ) VALUES
