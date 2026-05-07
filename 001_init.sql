@@ -3,6 +3,7 @@
 -- Purpose: Initialize the Restaurant Management Database System
 -- Based on the project proposal PDF scope
 
+-- stores customer information, including ID, name, contact details, and creation timestamp
 CREATE TABLE customer (
   customer_id      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   full_name        VARCHAR(120) NOT NULL,
@@ -11,6 +12,7 @@ CREATE TABLE customer (
   created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- stores staff information, including ID, name, role, contact details, hire date, and active status
 CREATE TABLE staff (
   staff_id         BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   full_name        VARCHAR(120) NOT NULL,
@@ -21,6 +23,7 @@ CREATE TABLE staff (
   CHECK (role IN ('Manager', 'Server', 'Host', 'Cashier'))
 );
 
+-- represents physical tables in the restaurant, with a unique table number, seating capacity, and current status
 CREATE TABLE restaurant_table (
   table_id         BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   table_number     INT NOT NULL UNIQUE,
@@ -29,6 +32,7 @@ CREATE TABLE restaurant_table (
   CHECK (status IN ('Available', 'Reserved', 'Occupied', 'Cleaning'))
 );
 
+-- menu items available for ordering, with name, category, price, and availability status
 CREATE TABLE menu_item (
   menu_item_id     BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   item_name        VARCHAR(120) NOT NULL UNIQUE,
@@ -37,6 +41,7 @@ CREATE TABLE menu_item (
   is_available     BOOLEAN NOT NULL DEFAULT TRUE
 );
 
+-- reservations made by customers, linking to customer, table, and staff information
 CREATE TABLE reservation (
   reservation_id   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   customer_id      BIGINT NOT NULL,
@@ -53,6 +58,8 @@ CREATE TABLE reservation (
   FOREIGN KEY (reserved_by) REFERENCES staff(staff_id)
 );
 
+-- stores information about orders placed by customers, linking to customer, table, and staff information
+-- includes order type (dine-in or takeout), status, total amount, and timestamps
 CREATE TABLE customer_order (
   order_id         BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   customer_id      BIGINT NOT NULL,
@@ -70,6 +77,7 @@ CREATE TABLE customer_order (
   FOREIGN KEY (staff_id) REFERENCES staff(staff_id)
 );
 
+-- Individual items within an order, linking to the menu item and including quantity, unit price, and line total
 CREATE TABLE order_item (
   order_item_id    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   order_id         BIGINT NOT NULL,
@@ -82,6 +90,7 @@ CREATE TABLE order_item (
   UNIQUE (order_id, menu_item_id)
 );
 
+-- Payment information for orders, linking to the order and staff who processed the payment, including method, amount, status, and timestamp
 CREATE TABLE payment (
   payment_id       BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   order_id         BIGINT NOT NULL UNIQUE,
