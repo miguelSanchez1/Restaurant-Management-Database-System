@@ -43,7 +43,7 @@ ORDER BY p.payment_id;
 
 
 -- =========================
--- UPDATE — 3 examples
+-- UPDATE — 6 examples
 -- =========================
 
 -- UPDATE #1: Change a reservation status
@@ -80,7 +80,7 @@ SELECT * FROM staff WHERE staff_id = 3;
 
 
 -- =========================
--- DELETE — 3 examples
+-- DELETE — 6 examples
 -- =========================
 
 BEGIN;
@@ -98,16 +98,22 @@ DELETE FROM reservation
 WHERE reservation_id = 3;
 
 -- DELETE #4: Remove a customer
-SELECT * FROM customer WHERE customer_id = 2;
-DELETE FROM customer WHERE customer_id = 2;
+SELECT * FROM reservation WHERE customer_id = 2;
+DELETE FROM reservation WHERE customer_id = 2;
 SELECT * FROM customer WHERE customer_id = 2;
 
 -- DELETE #5: Remove a menu item
+SELECT * FROM order_item WHERE menu_item_id = 6;
+DELETE FROM order_item WHERE menu_item_id = 6;
 SELECT * FROM menu_item WHERE menu_item_id = 6;
 DELETE FROM menu_item WHERE menu_item_id = 6;
 SELECT * FROM menu_item WHERE menu_item_id = 6;
 
 -- DELETE #6: Remove a staff record
+SELECT * FROM payment WHERE processed_by = 4;
+-- Delete dependent payments
+DELETE FROM payment WHERE processed_by = 4;
+-- Delete the staff member
 SELECT * FROM staff WHERE staff_id = 4;
 DELETE FROM staff WHERE staff_id = 4;
 SELECT * FROM staff WHERE staff_id = 4;
