@@ -47,21 +47,19 @@ ORDER BY p.payment_id;
 -- =========================
 
 -- UPDATE #1: Change a reservation status
-UPDATE reservation
-SET status = 'Seated'
-WHERE reservation_id = 1;
+SELECT * FROM reservation WHERE reservation_id = 1;
+UPDATE reservation SET status = 'Seated' WHERE reservation_id = 1;
+SELECT * FROM reservation WHERE reservation_id = 1;
 
 -- UPDATE #2: Mark a table as occupied
-UPDATE restaurant_table
-SET status = 'Occupied'
-WHERE table_id = 2;
+SELECT * FROM restaurant_table WHERE table_id = 2;
+UPDATE restaurant_table SET status = 'Occupied' WHERE table_id = 2;
+SELECT * FROM restaurant_table WHERE table_id = 2;
 
 -- UPDATE #3: Mark a payment as paid
-UPDATE payment
-SET payment_status = 'Paid',
-    amount_paid = 50.50,
-    paid_at = NOW()
-WHERE payment_id = 1;
+SELECT * FROM payment WHERE payment_id = 1;
+UPDATE payment SET payment_status = 'Paid', amount_paid = 50.50, paid_at = NOW() WHERE payment_id = 1;
+SELECT * FROM payment WHERE payment_id = 1;
 
 -- UPDATE #4: Change customer phone number
 SELECT * FROM customer WHERE customer_id = 1;
@@ -86,34 +84,41 @@ SELECT * FROM staff WHERE staff_id = 3;
 BEGIN;
 
 -- DELETE #1: Delete a pending payment record
-DELETE FROM payment
-WHERE payment_id = 1;
+SELECT * FROM payment WHERE payment_id = 1;
+DELETE FROM payment WHERE payment_id = 1;
+SELECT * FROM payment WHERE payment_id = 1;
 
 -- DELETE #2: Delete an order item row
-DELETE FROM order_item
-WHERE order_item_id = 1;
+SELECT * FROM order_item WHERE order_item_id = 1;
+DELETE FROM order_item WHERE order_item_id = 1;
+SELECT * FROM order_item WHERE order_item_id = 1;
 
 -- DELETE #3: Delete a completed reservation record
-DELETE FROM reservation
-WHERE reservation_id = 3;
+SELECT * FROM reservation WHERE reservation_id = 3;
+DELETE FROM reservation WHERE reservation_id = 3;
+SELECT * FROM reservation WHERE reservation_id = 3;
 
--- DELETE #4: Remove a customer
+-- DELETE #4: Remove a customer (must delete their reservations and orders first)
 SELECT * FROM reservation WHERE customer_id = 2;
 DELETE FROM reservation WHERE customer_id = 2;
+
+SELECT * FROM customer_order WHERE customer_id = 2;
+DELETE FROM customer_order WHERE customer_id = 2;
+
+SELECT * FROM customer WHERE customer_id = 2;
+DELETE FROM customer WHERE customer_id = 2;
 SELECT * FROM customer WHERE customer_id = 2;
 
--- DELETE #5: Remove a menu item
+-- DELETE #5: Remove a menu item (must delete dependent order items first)
 SELECT * FROM order_item WHERE menu_item_id = 6;
 DELETE FROM order_item WHERE menu_item_id = 6;
 SELECT * FROM menu_item WHERE menu_item_id = 6;
 DELETE FROM menu_item WHERE menu_item_id = 6;
 SELECT * FROM menu_item WHERE menu_item_id = 6;
 
--- DELETE #6: Remove a staff record
+-- DELETE #6: Remove a staff record (must delete dependent payments first)
 SELECT * FROM payment WHERE processed_by = 4;
--- Delete dependent payments
 DELETE FROM payment WHERE processed_by = 4;
--- Delete the staff member
 SELECT * FROM staff WHERE staff_id = 4;
 DELETE FROM staff WHERE staff_id = 4;
 SELECT * FROM staff WHERE staff_id = 4;
