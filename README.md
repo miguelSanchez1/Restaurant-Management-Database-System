@@ -60,12 +60,6 @@ Restaurant-Management-Database-System/
 - **Migrations:** plain `.sql` files, version-controlled here on GitHub
 - **Demo:** screen recording of the SQL Editor running each migration in order
 
-To run it yourself:
-
-1. Spin up a free Postgres instance (Supabase recommended).
-2. Open the SQL editor and run each file in order: `001` → `002` → `003` → `004` → `005`.
-3. Verify with the queries in `005_queries.sql` — you should see customers, orders, and payments populated.
-
 ---
 
 ## 🧱 Database schema at a glance
@@ -138,4 +132,3 @@ MIT — feel free to fork, learn from, and adapt for your own coursework.
 
 ---
 
-> ⭐ If this repo helped you learn SQL migrations or you're using it as a reference for your own CPSC 332 project, please star it!
