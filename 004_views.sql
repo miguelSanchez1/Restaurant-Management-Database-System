@@ -1,6 +1,10 @@
  -- 004_views.sql
 -- Purpose: Reporting and dashboard views
 
+-- vw_reservation_schedule
+-- Shows every reservation alongside the customer name, table number/capacity,
+-- party size, time, status, and which staff member booked it.
+-- Sorted chronologically so the host stand always sees the next reservation first.
 CREATE OR REPLACE VIEW vw_reservation_schedule AS
 SELECT
   r.reservation_id,
@@ -17,7 +21,11 @@ JOIN restaurant_table rt ON rt.table_id = r.table_id
 JOIN staff s ON s.staff_id = r.reserved_by
 ORDER BY r.reservation_time;
 
-
+-- vw_order_summary
+-- One row per order with the customer, server, table, status, and total.
+-- Uses LEFT JOIN on restaurant_table because takeout orders have NULL table_id;
+-- COALESCE displays them as table 0 instead of NULL for cleaner dashboards.
+-- Sorted newest-first so the kitchen sees recent activity at the top.
 CREATE OR REPLACE VIEW vw_order_summary AS
 SELECT
   o.order_id,
@@ -34,7 +42,9 @@ LEFT JOIN restaurant_table rt ON rt.table_id = o.table_id
 JOIN staff s ON s.staff_id = o.staff_id
 ORDER BY o.order_time DESC;
 
-
+-- vw_payment_summary
+-- One row per payment showing method, amount, status, and the customer it came from.
+-- Useful for end-of-shift cash-out reports and refund audits.
 CREATE OR REPLACE VIEW vw_payment_summary AS
 SELECT
   p.payment_id,
